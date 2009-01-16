@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+  "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" width="550" height="360"
+  xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>Ausrichtung und Leerzeichen</title>
+<desc>Laufrichtung, Orientierung, Bidirektionalität, Textbündigkeit, Leerzeichen</desc>
+  <defs>
+    <style type="text/css"><![CDATA[
+      text {font-family:Verdana,sans-serif;
+            font-size:20px;}
+    ]]></style>
+  </defs>
+
+<!-- Laufrichtung, Orientierung, Bidirektionalität 1 -->
+  <text x="30" y="40"
+    writing-mode="tb">
+    top bottom
+  </text>
+  <text x="60" y="40"
+    writing-mode="tb" glyph-orientation-vertical="0">
+    top bottom
+  </text>
+  <text x="90" y="40"
+    writing-mode="tb" glyph-orientation-vertical="270">
+    top bottom 270
+  </text>
+  <text x="120" y="40"
+    writing-mode="tb" glyph-orientation-vertical="270"
+    unicode-bidi="bidi-override" direction="rtl">
+    top bottom 270 right to left
+  </text>
+
+<!-- Laufrichtung, Orientierung, Bidirektionalität 2 -->
+  <g fill="red">
+    <text x="270" y="60"
+      writing-mode="rl">
+      right left
+    </text>
+    <text x="270" y="90"
+      writing-mode="lr">
+      left right
+    </text>
+    <text x="270" y="120"
+      writing-mode="lr" glyph-orientation-horizontal="180">
+      left right 180
+    </text>
+    <text x="270" y="150"
+      writing-mode="lr" glyph-orientation-horizontal="180"
+      unicode-bidi="bidi-override" direction="rtl">
+      left right 180 right to left
+    </text>
+    <line x1="270" y1="40" x2="270" y2="160" stroke="black" />
+  </g>
+
+<!-- Textbündigkeit links, mittig, rechts -->
+  <g fill="blue">
+    <text x="220" y="230" text-anchor="begin">
+      begin
+    </text>
+    <text x="220" y="260" text-anchor="middle">
+      middle
+    </text>
+    <text x="220" y="290" text-anchor="end">
+      end
+    </text>
+    <line x1="220" y1="200" x2="220" y2="310" stroke="black" />
+  </g>
+
+<!-- text-decoration -->
+  <text x="330" y="240"
+    text-decoration="underline">underline</text>
+  <text x="330" y="270"
+    text-decoration="line-through">line-through</text>
+  <text x="330" y="300"
+    text-decoration="overline">overline</text>
+  <text x="330" y="330"
+    text-decoration="blink">blink (vielleicht)</text>
+</svg>
