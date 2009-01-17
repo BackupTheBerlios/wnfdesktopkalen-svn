@@ -104,6 +104,12 @@ def StrToDate(s):
 def DateToStr(d):
     return d.strftime("%d.%m.%Y")
 
+def StrToInt(s):
+    try:
+        return int(s)
+    except:
+        return 0
+
 def AlterInJahren(aVon,aBis):
     jv = aVon.year
     jb = aBis.year
