@@ -60,6 +60,16 @@ class TwnfImage:
     def text_n(self,x,y,text):
         self.text(x,y,text,self.font_n,self.font_n_size,"")
 
+    def text_nc(self,x,y,b,text,halign="center"):
+        tw,th = self.font_n.getsize(text);
+        if halign == "center":
+            leftStart = x + ((b - tw) / 2)
+        elif halign == "right":
+            leftStart = x+b-tw
+        else:
+            leftStart = x
+        self.text_n(leftStart,y,text)
+
     def text_b(self,x,y,text):
         self.text(x,y,text,self.font_n,self.font_n_size,"bold")
 
@@ -98,7 +108,8 @@ class TwnfImage:
             print dn, ' existiert nicht.'
             
     def save(self,dn):
-        self.im.save(dn)
+        #self.im.quality=50
+        self.im.save(dn,quality=100)
 
     def text_countdown(self,x,y,b,h,text,aFontname,aFontSize,cl):
         #zeichnet den Text unten zentriert mit dem Font und in der Farbe

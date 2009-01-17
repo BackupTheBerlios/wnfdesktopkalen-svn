@@ -239,7 +239,7 @@ class TwnfDesktopKalender:
             elif (self.FarbeNormal <> self.FarbeTransparent):
                 im.text_box_c(x + 1, y + 1, self.TagBreite-2, th-2, s, self.FarbeNormal)
             else:
-                im.text_n(x + 2, y + 2, s)
+                im.text_nc(x + 2, y + 2, self.TagBreite-2, s)
             x = x + self.TagBreite + self.TagRand
         y = y0 + th + self.TagRand
         for z in range(4):
