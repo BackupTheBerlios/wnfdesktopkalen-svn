@@ -90,10 +90,13 @@ class TwnfImage:
         self.text_n(leftStart,y,text)
 
     def hintergrundbild(self,x,y,dn):
-        hg = Image.open(dn)
-        (b,h) = hg.size
-        self.im.paste(hg,(x,y,b,h))
-
+        try:
+            hg = Image.open(dn)
+            (b,h) = hg.size
+            self.im.paste(hg,(x,y,b,h))
+        except:
+            print dn, ' existiert nicht.'
+            
     def save(self,dn):
         self.im.save(dn)
 

@@ -219,15 +219,11 @@ class TwnfDesktopKalender:
             html = "%s </body></html>" % (html)
         return html
 
-
-    def ausgabe_jpg(self, dn):
+    def zeichne_kalender(self, im, x0, y0):
         d = self.von
         difference1 = datetime.timedelta(days=1)
-        im = wnf_image.TwnfImage(self.Breite, self.Hoehe, self.TextFont, self.TextFontSize, self.HGColor, self.TextColor, self.LineColor)
-        if self.GrafikD <> "":
-            im.hintergrundbild(0, 0, self.GrafikD)
-        x = self.XOffset
-        y = self.YOffset
+        x = x0
+        y = y0
         th = im.TextHeight + 4
         w = 0
         for c in range(7):
@@ -245,9 +241,9 @@ class TwnfDesktopKalender:
             else:
                 im.text_n(x + 2, y + 2, s)
             x = x + self.TagBreite + self.TagRand
-        y = self.YOffset + th + self.TagRand
+        y = y0 + th + self.TagRand
         for z in range(4):
-            x = self.XOffset
+            x = x0
             w = 0
             for c in range(7):
                 w = w + 1
@@ -282,66 +278,25 @@ class TwnfDesktopKalender:
                 x = x + self.TagBreite + self.TagRand
             y = y + self.TagHoehe + self.TagRand
         s = datetime.datetime.ctime(self.jetzt)
-        im.text_n(self.XOffset + 2, self.YOffset + self.TagHoehe-th, s)
+        im.text_n(x0 + 2, y0 + self.TagHoehe-th, s)
+
+
+    def ausgabe_jpg(self, dn):
+        im = wnf_image.TwnfImage(self.Breite, self.Hoehe, self.TextFont, self.TextFontSize, self.HGColor, self.TextColor, self.LineColor)
+        if self.GrafikD <> "":
+            im.hintergrundbild(0, 0, self.GrafikD)
+        x0 = self.XOffset
+        y0 = self.YOffset
+        self.zeichne_kalender(im, x0, y0)
         im.save(dn)
 
     def ausgabe_jpg_ohne_hintergrund(self, dn):
-        d = self.von
-        difference1 = datetime.timedelta(days=1)
         w = (self.TagBreite + self.TagRand) * 7;
         h = (self.TagHoehe + self.TagRand) * 4 + (self.TextFontSize + 2) * 1;
         im = wnf_image.TwnfImage(w, h, self.TextFont, self.TextFontSize, self.HGColor, self.TextColor, self.LineColor)
-        th = im.TextHeight + 2
-        x = 0
-        y = 0
-        w = 0
-        for c in range(7):
-            w = w + 1
-            im.rect(x, y, self.TagBreite, th)
-            s = wnf_tools.cWochentageL[c]
-            if (c == self.wochentag_i) and (self.FarbeHeute <> self.FarbeTransparent):
-                im.text_box(x + 1, y + 1, self.TagBreite-2, th-2, s, self.FarbeHeute)
-            elif (w == 7) and (self.FarbeSA <> self.FarbeTransparent):
-                im.text_box(x + 1, y + 1, self.TagBreite-2, th-2, s, self.FarbeSO)
-            elif (w == 6) and (self.FarbeSA <> self.FarbeTransparent):
-                im.text_box(x + 1, y + 1, self.TagBreite-2, th-2, s, self.FarbeSA)
-            elif (self.FarbeNormal <> self.FarbeTransparent):
-                im.text_box(x + 1, y + 1, self.TagBreite-2, th-2, s, self.FarbeNormal)
-            else:
-                im.text_n(x + 2, y + 2, s)
-            x = x + self.TagBreite + self.TagRand
-        y = th + self.TagRand
-        for z in range(4):
-            x = 0
-            w = 0
-            for c in range(7):
-                w = w + 1
-                if (d == self.heute) and (self.FarbeHeute <> self.FarbeTransparent):
-                    im.rectclrand(x, y, self.TagBreite, self.TagHoehe, self.FarbeHeute)
-                elif (wnf_tools.sFeiertag(d, self.Bundesland) <> "") and (self.FarbeFT <> self.FarbeTransparent):
-                    im.rectclrand(x, y, self.TagBreite, self.TagHoehe, self.FarbeFT)
-                elif (w == 7) and (self.FarbeSO <> self.FarbeTransparent):
-                    im.rectclrand(x, y, self.TagBreite, self.TagHoehe, self.FarbeSO)
-                elif (w == 6) and (self.FarbeSA <> self.FarbeTransparent):
-                    im.rectclrand(x, y, self.TagBreite, self.TagHoehe, self.FarbeSA)
-                elif (self.FarbeNormal <> self.FarbeTransparent):
-                    im.rectclrand(x, y, self.TagBreite, self.TagHoehe, self.FarbeNormal)
-                else:
-                    im.rect(x, y, self.TagBreite, self.TagHoehe)
-                s = wnf_tools.DateToStr(d)
-                im.text_b(x + 2, y + (2), s)
-                for i in range(4):
-                    s, cl = self.get_termin(d, i)
-                    if s <> "":
-                        print d, s, cl
-                        im.text_box(x + 1, y + (th * (i + 1)), self.TagBreite-2, th, s, cl)
-                if (self.CountDown >= self.heute) and (self.CountDown >= d) and(d >= self.heute):
-                    cd = self.CountDown -d
-                    s = str(cd.days)
-                    im.text_countdown(x, y, self.TagBreite, self.TagHoehe, s, self.CountDownFont, self.CountDownFontSize, self.FarbeCountDown)
-                d = d + difference1
-                x = x + self.TagBreite + self.TagRand
-            y = y + self.TagHoehe + self.TagRand
+        x0 = 0
+        y0 = 0
+        self.zeichne_kalender(im, x0, y0)
         im.save(dn)
 
     def show_jpg(self):
@@ -535,8 +490,8 @@ if __name__ == "__main__":
     print t.caption
     print "Auswerten von ", ini
     if t.lesen(ini):
-        t.ausgabe_jpg_ohne_hintergrund(dn)
-        #t.ausgabe_jpg(dn)
+        #t.ausgabe_jpg_ohne_hintergrund(dn)
+        t.ausgabe_jpg(dn)
         #t.ausgabe_jpg(dn)
         #t.show_jpg()
         #print t.ausgabe_html(False)
