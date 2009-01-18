@@ -277,8 +277,8 @@ class TwnfDesktopKalender:
                 d = d + difference1
                 x = x + self.TagBreite + self.TagRand
             y = y + self.TagHoehe + self.TagRand
-        s = datetime.datetime.ctime(self.jetzt)
-        im.text_n(x0 + 2, y0 + self.TagHoehe-th, s)
+#        s = datetime.datetime.ctime(self.jetzt)
+#        im.text_n(x0 + 2, y0 + self.TagHoehe-th, s)
 
 
     def ausgabe_jpg(self, dn):
