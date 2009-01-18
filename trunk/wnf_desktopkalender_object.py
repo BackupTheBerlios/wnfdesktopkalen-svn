@@ -38,7 +38,8 @@ class TwnfDesktopKalender:
         self.FarbeSA = wnf_tools.clGray;
         self.FarbeSO = wnf_tools.clGray;
         self.FarbeNormal = wnf_tools.clWhite;
-        self.GrafikD = ""
+        self.GrafikD = "" #Grafikdateiname
+        self.GrafikV = "" #Grafikverzeichnis
         self.TextFont = wnf_tools.cFontDejaVuSans
         self.TextFontSize = 9
         self.Bundesland = wnf_tools.cSN
@@ -280,11 +281,33 @@ class TwnfDesktopKalender:
 #        s = datetime.datetime.ctime(self.jetzt)
 #        im.text_n(x0 + 2, y0 + self.TagHoehe-th, s)
 
+    def getHintergrundBild(self):
+        try:
+            y = os.listdir(self.GrafikV)
+            y.sort()
+            #aus allen Dateien die jpg-bilder herausfiltern
+            x = []
+            for dateiname in y:
+                if dateiname.lower().endswith(".jpg"):
+                    x.append(dateiname)
+            i = wnf_tools.tagesnummer(self.heute.year, self.heute.month, self.heute.day)
+            i = (i % len(x)) # Prozentzeichen bewirkt modulo
+            print i, x
+            s = x[i]
+            s = self.GrafikV + s
+            print s
+            if os.path.exists(s):
+                return s
+            else:
+                return self.GrafikD
+        except:
+            return self.GrafikD
 
     def ausgabe_jpg(self, dn):
         im = wnf_image.TwnfImage(self.Breite, self.Hoehe, self.TextFont, self.TextFontSize, self.HGColor, self.TextColor, self.LineColor)
-        if self.GrafikD <> "":
-            im.hintergrundbild(0, 0, self.GrafikD)
+        s = self.getHintergrundBild()
+        if s <> "":
+            im.hintergrundbild(0, 0, s)
         x0 = self.XOffset
         y0 = self.YOffset
         self.zeichne_kalender(im, x0, y0)
@@ -433,6 +456,7 @@ class TwnfDesktopKalender:
             self.XOffset = ini.getint("Standard", "XOffset")
             self.YOffset = ini.getint("Standard", "YOffset")
             self.GrafikD = self.lese_str(ini, "Standard", "Linux_GrafikD")
+            self.GrafikV = self.lese_str(ini, "Standard", "Linux_GrafikV")
             self.TextFont = self.lese_str(ini, "Standard", "Linux_TextFont")
             self.TextFontSize = self.lese_int(ini, "Standard", "Linux_TextFont_Size", self.TextFontSize)
             self.CountDownFont = self.lese_str(ini, "Standard", "Linux_CountDownFont")
@@ -483,8 +507,8 @@ class TwnfDesktopKalender:
 if __name__ == "__main__":
     #ini = os.environ["HOME"]
     #ini = "%s/.wnfdesktopkalender/wnfDesktopKalender.ini" % (ini)
-    #ini = "/wnfdaten/wine/Eigene_Dateien/wnfDesktopKalender/wnfDesktopKalender.ini"
-    ini = "/wnfdaten/Downloads/wnfDesktopKalender.ini"
+    ini = "/wnfdaten/wine/Eigene_Dateien/wnfDesktopKalender/wnfDesktopKalender.ini"
+    #ini = "/wnfdaten/Downloads/wnfDesktopKalender.ini"
     dn = '/tmp/wnfDesktopkalender.jpg'
     t = TwnfDesktopKalender()
     print t.caption
