@@ -264,8 +264,10 @@ class TwnfDesktopKalender:
                 else:
                     im.rect(x, y, self.TagBreite, self.TagHoehe)
                 s = wnf_tools.DateToStr(d)
-                im.text_b(x + 2, y + (2), s)
-                im.text_box_c(x + 1, y + 2, self.TagBreite-2, th, s, cl)
+                if (cl<>self.FarbeTransparent):
+                    im.text_box_c(x + 1, y + 2, self.TagBreite-2, th, s, cl)
+                else:
+                    im.text_nc(x + 1, y + 2, self.TagBreite-2, s)
                 for i in range(4):
                     s, cl = self.get_termin(d, i)
                     if s <> "":
@@ -291,11 +293,11 @@ class TwnfDesktopKalender:
                 if dateiname.lower().endswith(".jpg"):
                     x.append(dateiname)
             i = wnf_tools.tagesnummer(self.heute.year, self.heute.month, self.heute.day)
+            # print i,x,y
             i = (i % len(x)) # Prozentzeichen bewirkt modulo
-            print i, x
             s = x[i]
             s = self.GrafikV + s
-            print s
+            print i,s
             if os.path.exists(s):
                 return s
             else:
@@ -507,8 +509,8 @@ class TwnfDesktopKalender:
 if __name__ == "__main__":
     #ini = os.environ["HOME"]
     #ini = "%s/.wnfdesktopkalender/wnfDesktopKalender.ini" % (ini)
-    ini = "/wnfdaten/wine/Eigene_Dateien/wnfDesktopKalender/wnfDesktopKalender.ini"
-    #ini = "/wnfdaten/Downloads/wnfDesktopKalender.ini"
+    #ini = "/wnfdaten/wine/Eigene_Dateien/wnfDesktopKalender/wnfDesktopKalender.ini"
+    ini = "/wnfdaten/Downloads/wnfDesktopKalender.ini"
     dn = '/tmp/wnfDesktopkalender.jpg'
     t = TwnfDesktopKalender()
     print t.caption
