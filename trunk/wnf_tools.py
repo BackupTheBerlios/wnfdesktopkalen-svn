@@ -52,6 +52,16 @@ def PascalToRGB(s,aDefault):
         return clYellow
     elif s=="clLime":
         return clLime
+    elif s=="clBlack":
+        return clBlack
+    elif s=="clWhite":
+        return clWhite
+    elif s=="clRed":
+        return clRed
+    elif s=="clBlue":
+        return clBlue
+    elif s=="clGreen":
+        return clGreen
     elif s.startswith("$00"):
         b=int(s[3:5],16)
         g=int(s[5:7],16)

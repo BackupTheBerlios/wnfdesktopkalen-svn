@@ -20,7 +20,7 @@ class TwnfDesktopKalender:
         self.bis = self.von + datetime.timedelta(days=28)
         #print self.von,self.bis
         self.termine = {}
-        self.caption = "wnfDesktopKalender 0.5"
+        self.caption = "wnfDesktopKalender 0.6"
         self.Breite = 800
         self.Hoehe = 600
         self.TagBreite = 90
@@ -443,6 +443,7 @@ class TwnfDesktopKalender:
     def lese_color(self, ini, aSection, aName, aDefault):
         s = self.lese_str(ini, aSection, aName)
         cl = wnf_tools.PascalToRGB(s, aDefault)
+        print aName,s,cl
         return cl
 
     def lesen(self, dn):
@@ -468,6 +469,7 @@ class TwnfDesktopKalender:
             self.FarbeFT = self.lese_color(ini, "Standard", "FarbeFT", self.FarbeFT)
             self.FarbeSA = self.lese_color(ini, "Standard", "FarbeSA", self.FarbeSA)
             self.FarbeSO = self.lese_color(ini, "Standard", "FarbeSO", self.FarbeSO)
+            self.HGColor = self.lese_color(ini, "Standard", "FarbeHG", self.HGColor)
             self.FarbeNormal = self.lese_color(ini, "Standard", "FarbeNormal", self.FarbeNormal)
             self.FarbeTransparent = self.lese_color(ini, "Standard", "FarbeTransparent", self.FarbeTransparent)
             self.Bundesland = self.lese_str(ini, "Standard", "Bundesland")
@@ -509,8 +511,8 @@ class TwnfDesktopKalender:
 if __name__ == "__main__":
     #ini = os.environ["HOME"]
     #ini = "%s/.wnfdesktopkalender/wnfDesktopKalender.ini" % (ini)
-    #ini = "/wnfdaten/wine/Eigene_Dateien/wnfDesktopKalender/wnfDesktopKalender.ini"
-    ini = "/wnfdaten/Downloads/wnfDesktopKalender.ini"
+    ini = "/wnfdaten/wine/Eigene_Dateien/wnfDesktopKalender/wnfDesktopKalender.ini"
+    #ini = "/wnfdaten/Downloads/wnfDesktopKalender.ini"
     dn = '/tmp/wnfDesktopkalender.jpg'
     t = TwnfDesktopKalender()
     print t.caption
