@@ -14,7 +14,8 @@ def main(args):
     zpfad = os.environ["HOME"]
     zpfad = "%s/.wnfdesktopkalender" % (zpfad)
     if wnf_tools.ForceDir(zpfad):
-        t=wnf_desktopkalender_object.TwnfDesktopKalender()
+        d = datetime.date.today()
+        t=wnf_desktopkalender_object.TwnfDesktopKalender(d)
         print t.caption
         #Entweder das Inifile wird als erster Parameter übegeben
         ini=wnf_tools.ParamStr(args,1)

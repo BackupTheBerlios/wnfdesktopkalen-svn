@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
-import sys
-import time
-
 import ConfigParser
 import datetime
 import os
@@ -12,15 +9,16 @@ import wnf_tools
 
 class TwnfDesktopKalender:
 
-    def __init__(self):
-        self.heute = datetime.date.today()
+    def __init__(self,aStichtag):
+        self.modus = 0
+        self.heute = aStichtag
         self.jetzt = datetime.datetime.now()
         self.wochentag_i = wnf_tools.Wochentag_i(self.heute)
         self.von = wnf_tools.ErsterDieserWoche(self.heute)
         self.bis = self.von + datetime.timedelta(days=28)
         #print self.von,self.bis
         self.termine = {}
-        self.caption = "wnfDesktopKalender 0.6"
+        self.caption = "wnfDesktopKalender 0.7"
         self.Breite = 800
         self.Hoehe = 600
         self.TagBreite = 90
@@ -43,8 +41,9 @@ class TwnfDesktopKalender:
         self.TextFont = wnf_tools.cFontDejaVuSans
         self.TextFontSize = 9
         self.Bundesland = wnf_tools.cSN
-        self.CountDown = wnf_tools.StrToDate('03.04.2008')
-        self.CountDownFont = ""
+        self.CountDown = wnf_tools.StrToDate('03.04.2009')
+        self.CountDownATM = 0
+        self.CountDownFont =  wnf_tools.cFontDejaVuSans
         self.CountDownFontSize = 18
         self.FarbeCountDown = wnf_tools.clWhite;
 
@@ -443,14 +442,22 @@ class TwnfDesktopKalender:
     def lese_color(self, ini, aSection, aName, aDefault):
         s = self.lese_str(ini, aSection, aName)
         cl = wnf_tools.PascalToRGB(s, aDefault)
-        print aName,s,cl
         return cl
+
+    def lese_date(self, ini, aSection, aName, aDefault):
+        s = self.lese_str(ini, aSection, aName)
+        try:
+            d = wnf_tools.StrToDate(s)
+        except:
+            d = aDefault
+        return d
 
     def lesen(self, dn):
         if os.path.exists(dn):
             ini = ConfigParser.ConfigParser()
             ini.read(dn)
             self.IniDateiname = dn
+            self.modus = self.lese_int(ini, "Standard", "Modus", self.modus)
             self.Breite = ini.getint("Standard", "Breite")
             self.Hoehe = ini.getint("Standard", "Hoehe")
             self.TagBreite = ini.getint("Standard", "TagBreite")
@@ -464,6 +471,8 @@ class TwnfDesktopKalender:
             self.TextFontSize = self.lese_int(ini, "Standard", "Linux_TextFont_Size", self.TextFontSize)
             self.CountDownFont = self.lese_str(ini, "Standard", "Linux_CountDownFont")
             self.CountDownFontSize = self.lese_int(ini, "Standard", "Linux_CountDownFont_Size", self.CountDownFontSize)
+            self.CountDown = self.lese_date(ini, "Standard", "CountdownDatum",self.CountDown)
+            self.CountDownATM = self.lese_int(ini, "Standard", "CountdownATM",self.CountDownATM)
             self.FarbeCountDown = self.lese_color(ini, "Standard", "FarbeCountDown", self.FarbeCountDown)
             self.FarbeHeute = self.lese_color(ini, "Standard", "FarbeHeute", self.FarbeHeute)
             self.FarbeFT = self.lese_color(ini, "Standard", "FarbeFT", self.FarbeFT)
@@ -473,6 +482,10 @@ class TwnfDesktopKalender:
             self.FarbeNormal = self.lese_color(ini, "Standard", "FarbeNormal", self.FarbeNormal)
             self.FarbeTransparent = self.lese_color(ini, "Standard", "FarbeTransparent", self.FarbeTransparent)
             self.Bundesland = self.lese_str(ini, "Standard", "Bundesland")
+            if ((self.modus==2) and (self.wochentag_i<2)):
+                self.von = wnf_tools.ErsterDieserWoche(self.heute)
+                self.von = self.von - datetime.timedelta(days=7)
+                self.bis = self.von + datetime.timedelta(days=28)
             self.eintragen_feiertage()
             try:
                 for x in ini.items('Termine'):
@@ -514,7 +527,9 @@ if __name__ == "__main__":
     ini = "/wnfdaten/wine/Eigene_Dateien/wnfDesktopKalender/wnfDesktopKalender.ini"
     #ini = "/wnfdaten/Downloads/wnfDesktopKalender.ini"
     dn = '/tmp/wnfDesktopkalender.jpg'
-    t = TwnfDesktopKalender()
+    d = datetime.date.today()
+    d = wnf_tools.StrToDate('02.02.2009')
+    t = TwnfDesktopKalender(d)
     print t.caption
     print "Auswerten von ", ini
     if t.lesen(ini):
