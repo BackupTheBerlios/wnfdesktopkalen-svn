@@ -18,7 +18,7 @@ class TwnfDesktopKalender:
         self.bis = self.von + datetime.timedelta(days=28)
         #print self.von,self.bis
         self.termine = {}
-        self.caption = "wnfDesktopKalender 0.7"
+        self.caption = "wnfDesktopKalender 0.8"
         self.Breite = 800
         self.Hoehe = 600
         self.TagBreite = 90

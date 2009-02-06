@@ -2,13 +2,16 @@
 # -*- coding: UTF-8 -*-
 import os
 import sys
+import datetime
 import wnf_tools
 import wnf_desktopkalender_object
 
 #fontname = "/usr/share/fonts/truetype/freefont/FreeSans.ttf"
 #Fontname = "/usr/share/fonts/truetype/msttcorefonts/verdana.ttf"
 #GrafikD = "/wnfdaten/wine/Eigene_Bilder/Wallpaper/www_soc_com/200810011842-5490.jpg"
-#IniDatei = "/wnfdaten/wine/Eigene_Dateien/wnfDesktopKalender/wnfDesktopKalender.ini"
+#Das ist die Standard-Ini-Datei des Entwicklers
+#Der Anwender sollte seine Ini-Datei als  Parameter übergeben
+IniDatei = "/wnfdaten/wine/Eigene_Dateien/wnfDesktopKalender/wnfDesktopKalender.ini"
 
 def main(args):
     zpfad = os.environ["HOME"]
@@ -21,7 +24,7 @@ def main(args):
         ini=wnf_tools.ParamStr(args,1)
         if ini=="":
             #oder es wird das Standard Ini-File verwendet
-            ini = "%s/wnfDesktopKalender.ini" % zpfad
+            ini = IniDatei
         print "Auswerten von ",ini
         if t.lesen(ini):
             if t.GrafikD=="":
