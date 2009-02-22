@@ -5,7 +5,7 @@
 import sys
 import kinterbasdb; kinterbasdb.init(type_conv=0)
 import kinterbasdb.services
-import wnf_tools
+#import wnf_tools
 
 # Encoding der Standardausgabe herausfinden
 stdout_encoding = sys.stdout.encoding or sys.getfilesystemencoding()
@@ -17,7 +17,7 @@ class TwnfFIBDatabase:
         self.User=aUser
         self.Passwort=aPasswort
 
-    def ZeigeStatus(self):
+    def zeigeStatus(self):
         print "Server                : %s" % self.Server
         print "Datenbank             : %s" % self.Datenbank
         print "User                  : %s" % self.User

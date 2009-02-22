@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
-import sys
+#import sys
 import os
 import tempfile
 import time
@@ -25,12 +25,12 @@ cFontDejaVuSans = "/usr/share/fonts/truetype/ttf-dejavu/DejaVuSans.ttf"
 cWochentageL = ("Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag")
 
 
-def ForceDir(aPfad):
+def forceDir(aPfad):
     if not os.path.exists(aPfad):
         os.makedirs(aPfad)
     return os.path.exists(aPfad)
 
-def TempDateiname(aExtension):
+def tempDateiname(aExtension):
     #http://docs.python.org/lib/module-tempfile.html
     #die Datei muss vom Anwender gelöscht werden
     f,s = tempfile.mkstemp(aExtension,"wnf_")
@@ -38,16 +38,18 @@ def TempDateiname(aExtension):
     os.close(f)
     return s
 
-def DateiStarten(aDateiname):
+def dateiStarten(aDateiname):
     if aDateiname.endswith(".bmp"):
         s = "gwenview %s" % aDateiname
     elif aDateiname.endswith(".jpg"):
+        s = "gwenview %s" % aDateiname
+    elif aDateiname.endswith(".png"):
         s = "gwenview %s" % aDateiname
     else:
         s = aDateiname
     os.system(s)
 
-def PascalToRGB(s,aDefault):
+def pascalToRGB(s,aDefault):
     if s=="clYellow":
         return clYellow
     elif s=="clLime":
@@ -70,11 +72,11 @@ def PascalToRGB(s,aDefault):
     else:
         return aDefault
 
-def RGBToHTML(RGB):
+def rgbToHTML(RGB):
     s="#%s%s%s" % (hex(RGB[0])[-2:],hex(RGB[1])[-2:],hex(RGB[2])[-2:])
     return s
 
-def ParamStr(args,ipos):
+def paramStr(args,ipos):
     s=""
     i=0
     for a in args:
@@ -108,24 +110,24 @@ def isSchaltjahr(d):
     jj = d.year
     return isSchaltjahr(jj)
 
-def StrToDate(s):
+def strToDate(s):
     return datetime.date(*time.strptime(s, "%d.%m.%Y")[0:3])
 
-def DateToStr(d):
+def dateToStr(d):
     return d.strftime("%d.%m.%Y")
 
-def StrToInt(s):
+def strToInt(s):
     try:
         return int(s)
     except:
         return 0
 
-def AlterInJahren(aVon,aBis):
+def alterInJahren(aVon,aBis):
     jv = aVon.year
     jb = aBis.year
     return jb - jv
 
-def DiesesJahr(d,aDiesesJahr):
+def diesesJahr(d,aDiesesJahr):
     jj = aDiesesJahr.year
     mm = d.month
     tt = d.day
@@ -134,13 +136,13 @@ def DiesesJahr(d,aDiesesJahr):
             tt=28
     return datetime.date(jj,mm,tt)
 
-def ErsterDieserWoche(d):
+def ersterDieserWoche(d):
     w = calendar.weekday(d.year,d.month,d.day)
     d = d + datetime.timedelta(days=-w)
     # print w, d
     return d
 
-def Wochentag_i(d):
+def wochentag_i(d):
     w = calendar.weekday(d.year,d.month,d.day)
     return w
 
@@ -264,6 +266,6 @@ def alleFeiertage(jj,aBundesland):
 if __name__ == "__main__":
     print "Ostersonntag ",ostersonntag_tn(2008)
     alleFeiertage(2008,cSN)
-    cl=PascalToRGB("$0080FFFF",clWhite)
+    cl=pascalToRGB("$0080FFFF",clWhite)
     print cl
     print zeitraum_ueberlappt((2008,01,01),(2008,12,31),(2008,03,01),(2008,03,31))

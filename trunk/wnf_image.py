@@ -39,9 +39,9 @@ class TwnfImage:
         self.draw.rectangle((x,y,x+b,y+h),outline=self.LineColor,fill=cl)
 
     def show(self):
-        dn = wnf_tools.TempDateiname(".bmp")
+        dn = wnf_tools.tempDateiname(".png")
         self.save(dn)
-        wnf_tools.DateiStarten(dn)
+        wnf_tools.dateiStarten(dn)
         os.remove(dn)
 
     def text(self,x,y,text,aFont,aSize,aWeight):

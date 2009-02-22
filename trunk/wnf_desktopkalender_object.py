@@ -13,8 +13,8 @@ class TwnfDesktopKalender:
         self.modus = 0
         self.heute = aStichtag
         self.jetzt = datetime.datetime.now()
-        self.wochentag_i = wnf_tools.Wochentag_i(self.heute)
-        self.von = wnf_tools.ErsterDieserWoche(self.heute)
+        self.wochentag_i = wnf_tools.wochentag_i(self.heute)
+        self.von = wnf_tools.ersterDieserWoche(self.heute)
         self.bis = self.von + datetime.timedelta(days=28)
         #print self.von,self.bis
         self.termine = {}
@@ -41,7 +41,7 @@ class TwnfDesktopKalender:
         self.TextFont = wnf_tools.cFontDejaVuSans
         self.TextFontSize = 9
         self.Bundesland = wnf_tools.cSN
-        self.CountDown = wnf_tools.StrToDate('03.04.2009')
+        self.CountDown = wnf_tools.strToDate('03.04.2009')
         self.CountDownATM = 0
         self.CountDownFont =  wnf_tools.cFontDejaVuSans
         self.CountDownFontSize = 18
@@ -72,7 +72,7 @@ class TwnfDesktopKalender:
         print len(self.termine)
         for d, t in self.termine.items():
             for n, c in t.items():
-                print "Datum :", wnf_tools.DateToStr(d), n
+                print "Datum :", wnf_tools.dateToStr(d), n
 
     def ausgabe_28(self):
         b = 16
@@ -91,7 +91,7 @@ class TwnfDesktopKalender:
             s3 = "|"
             s4 = "|"
             for t in range(7):
-                sd = "%s%15s|" % (sd, wnf_tools.DateToStr(d))
+                sd = "%s%15s|" % (sd, wnf_tools.dateToStr(d))
                 s, cl = self.get_termin(d, 0)
                 s0 = "%s%15s|" % (s0, s[:14])
                 s, cl = self.get_termin(d, 1)
@@ -130,7 +130,7 @@ class TwnfDesktopKalender:
         #xc wird für die zentrierte Ausgabe benoetigt
         xc = self.TagBreite / 2
         th = self.TextFontSize + 2
-        farbe = wnf_tools.RGBToHTML(self.FarbeNormal)
+        farbe = wnf_tools.rgbToHTML(self.FarbeNormal)
         for c in range(7):
             fd.rect(x, y, self.TagBreite, th + 4, farbe)
             s = wnf_tools.cWochentageL[c]
@@ -155,7 +155,7 @@ class TwnfDesktopKalender:
                 if cl == self.FarbeTransparent:
                     farbe = ''
                 else:
-                    farbe = wnf_tools.RGBToHTML(cl)
+                    farbe = wnf_tools.rgbToHTML(cl)
                 fd.rect(x, y, self.TagBreite, self.TagHoehe, farbe)
                 s = wnf_tools.DateToStr(d)
                 fd.text_nc(x + xc, y + th, s)
@@ -165,7 +165,7 @@ class TwnfDesktopKalender:
                 if cl == self.FarbeTransparent:
                     farbe = ''
                 else:
-                    farbe = wnf_tools.RGBToHTML(cl)
+                    farbe = wnf_tools.rgbToHTML(cl)
                     fd.rect(x, y + 2 + (th * (i + 1)), self.TagBreite, th, farbe)
                 fd.text_nc(x + xc, y + (th * (i + 2)), s)
                 d = d + difference1
@@ -205,8 +205,8 @@ class TwnfDesktopKalender:
                 if cl == self.FarbeTransparent:
                     farbe = ''
                 else:
-                    farbe = ' bgcolor="%s"' % wnf_tools.RGBToHTML(cl)
-                s = wnf_tools.DateToStr(d)
+                    farbe = ' bgcolor="%s"' % wnf_tools.rgbToHTML(cl)
+                s = wnf_tools.dateToStr(d)
                 t = '%s<td align=center %s><b> %s </b><br />\n' % (t, farbe, s)
                 for i in range(4):
                     s = self.get_termin(d, i)
@@ -262,7 +262,7 @@ class TwnfDesktopKalender:
                     im.rectclrand(x, y, self.TagBreite, self.TagHoehe, cl)
                 else:
                     im.rect(x, y, self.TagBreite, self.TagHoehe)
-                s = wnf_tools.DateToStr(d)
+                s = wnf_tools.dateToStr(d)
                 if (cl<>self.FarbeTransparent):
                     im.text_box_c(x + 1, y + 2, self.TagBreite-2, th, s, cl)
                 else:
@@ -324,9 +324,9 @@ class TwnfDesktopKalender:
         im.save(dn)
 
     def show_jpg(self):
-        dn = wnf_tools.TempDateiname(".bmp")
+        dn = wnf_tools.tempDateiname(".bmp")
         self.ausgabe_jpg(dn)
-        wnf_tools.DateiStarten(dn)
+        wnf_tools.dateiStarten(dn)
         os.remove(dn)
 
     def eintragen_feiertage(self):
@@ -340,27 +340,27 @@ class TwnfDesktopKalender:
 
     def eintragen_termin(self, s):
         z = s.split(";")
-        d = wnf_tools.StrToDate(z[0])
+        d = wnf_tools.strToDate(z[0])
         n = z[1]
         c = z[2]
-        cl = wnf_tools.PascalToRGB(c, wnf_tools.clWhite)
+        cl = wnf_tools.pascalToRGB(c, wnf_tools.clWhite)
         if (d >= self.von) and (d <= self.bis):
             self.eintragen(d, n, cl)
 
     def eintragen_geburtstag(self, s):
         z = s.split(";")
-        g = wnf_tools.StrToDate(z[0])
+        g = wnf_tools.strToDate(z[0])
         n = z[1]
         c = z[2]
-        cl = wnf_tools.PascalToRGB(c, wnf_tools.clYellow)
-        dv = wnf_tools.DiesesJahr(g, self.von)
-        db = wnf_tools.DiesesJahr(g, self.bis)
+        cl = wnf_tools.pascalToRGB(c, wnf_tools.clYellow)
+        dv = wnf_tools.diesesJahr(g, self.von)
+        db = wnf_tools.diesesJahr(g, self.bis)
         if (dv >= self.von) and (dv <= self.bis):
-            i = wnf_tools.AlterInJahren(g, self.von)
+            i = wnf_tools.alterInJahren(g, self.von)
             n = "%i %s" % (i, n)
             self.eintragen(dv, n, cl)
         elif (db >= self.von) and (db <= self.bis):
-            i = wnf_tools.AlterInJahren(g, self.bis)
+            i = wnf_tools.alterInJahren(g, self.bis)
             n = "%i %s" % (i, n)
             self.eintragen(db, n, cl)
             #zu Testzwecken zwei geburtstage an einem Tag
@@ -369,11 +369,11 @@ class TwnfDesktopKalender:
 
     def eintragen_zeitraum(self, s):
         z = s.split(";")
-        dv = wnf_tools.StrToDate(z[0])
-        db = wnf_tools.StrToDate(z[1])
+        dv = wnf_tools.strToDate(z[0])
+        db = wnf_tools.strToDate(z[1])
         n = z[2]
         c = z[3]
-        cl = wnf_tools.PascalToRGB(c, wnf_tools.clWhite)
+        cl = wnf_tools.pascalToRGB(c, wnf_tools.clWhite)
         if wnf_tools.zeitraum_ueberlappt(dv, db, self.von, self.bis):
             difference1 = datetime.timedelta(days=1)
             d = self.von
@@ -384,11 +384,11 @@ class TwnfDesktopKalender:
 
     def eintragen_zyklisch(self, s):
         z = s.split(";")
-        g = wnf_tools.StrToDate(z[0])   #Anfangstermin
-        t = wnf_tools.StrToInt(z[1])    #Wiederhalung alle t Tage
+        g = wnf_tools.strToDate(z[0])   #Anfangstermin
+        t = wnf_tools.strToInt(z[1])    #Wiederhalung alle t Tage
         n = z[2]                        #Name
         c = z[3]                        #Farbe
-        cl = wnf_tools.PascalToRGB(c, wnf_tools.clYellow)
+        cl = wnf_tools.pascalToRGB(c, wnf_tools.clYellow)
         while g < self.bis:
             if g>self.von:
                 self.eintragen(g, n, cl)
@@ -398,7 +398,7 @@ class TwnfDesktopKalender:
         z = s.split(";")
         n = z[0]
         c = z[1]
-        cl = wnf_tools.PascalToRGB(c, wnf_tools.clWhite)
+        cl = wnf_tools.pascalToRGB(c, wnf_tools.clWhite)
         art = z[2]
         i = 0
         for dt in z:
@@ -406,8 +406,8 @@ class TwnfDesktopKalender:
                 if dt.find("-") >= 0:
                     #Multitermin als Zeitraum von bis
                     t = dt.split("-")
-                    dv = wnf_tools.StrToDate(t[0])
-                    db = wnf_tools.StrToDate(t[1])
+                    dv = wnf_tools.strToDate(t[0])
+                    db = wnf_tools.strToDate(t[1])
                     if wnf_tools.zeitraum_ueberlappt(dv, db, self.von, self.bis):
                         difference1 = datetime.timedelta(days=1)
                         d = self.von
@@ -418,7 +418,7 @@ class TwnfDesktopKalender:
                             d = d + difference1
                 else:
                     #einzelner Multitermin
-                    d = wnf_tools.StrToDate(dt)
+                    d = wnf_tools.strToDate(dt)
                     if (d >= self.von) and (d <= self.bis):
                         self.eintragen(d, n, cl)
                         print n, d
@@ -441,13 +441,13 @@ class TwnfDesktopKalender:
 
     def lese_color(self, ini, aSection, aName, aDefault):
         s = self.lese_str(ini, aSection, aName)
-        cl = wnf_tools.PascalToRGB(s, aDefault)
+        cl = wnf_tools.pascalToRGB(s, aDefault)
         return cl
 
     def lese_date(self, ini, aSection, aName, aDefault):
         s = self.lese_str(ini, aSection, aName)
         try:
-            d = wnf_tools.StrToDate(s)
+            d = wnf_tools.strToDate(s)
         except:
             d = aDefault
         return d
@@ -483,7 +483,7 @@ class TwnfDesktopKalender:
             self.FarbeTransparent = self.lese_color(ini, "Standard", "FarbeTransparent", self.FarbeTransparent)
             self.Bundesland = self.lese_str(ini, "Standard", "Bundesland")
             if ((self.modus==2) and (self.wochentag_i<2)):
-                self.von = wnf_tools.ErsterDieserWoche(self.heute)
+                self.von = wnf_tools.ersterDieserWoche(self.heute)
                 self.von = self.von - datetime.timedelta(days=7)
                 self.bis = self.von + datetime.timedelta(days=28)
             self.eintragen_feiertage()
@@ -516,7 +516,7 @@ class TwnfDesktopKalender:
         else:
             return False
 
-    def SetWallpaper(self, dn):
+    def setWallpaper(self, dn):
         s = 'dcop kdesktop KBackgroundIface setWallpaper %s 2' % (dn)
         os.system(s)
         # print s
@@ -528,7 +528,7 @@ if __name__ == "__main__":
     #ini = "/wnfdaten/Downloads/wnfDesktopKalender.ini"
     dn = '/tmp/wnfDesktopkalender.jpg'
     d = datetime.date.today()
-    d = wnf_tools.StrToDate('02.02.2009')
+    d = wnf_tools.strToDate('02.02.2009')
     t = TwnfDesktopKalender(d)
     print t.caption
     print "Auswerten von ", ini
