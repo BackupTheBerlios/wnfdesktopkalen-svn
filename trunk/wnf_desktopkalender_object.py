@@ -18,7 +18,7 @@ class TwnfDesktopKalender:
         self.bis = self.von + datetime.timedelta(days=28)
         #print self.von,self.bis
         self.termine = {}
-        self.caption = "wnfDesktopKalender 0.8"
+        self.caption = "wnfDesktopKalender 0.10"
         self.Breite = 800
         self.Hoehe = 600
         self.TagBreite = 90
@@ -488,15 +488,15 @@ class TwnfDesktopKalender:
                 self.bis = self.von + datetime.timedelta(days=28)
             self.eintragen_feiertage()
             try:
-                for x in ini.items('Termine'):
-                    self.eintragen_termin(x[1])
-            except ConfigParser.NoSectionError:
-                print 'Keine Termine'
-            try:
                 for x in ini.items('Geburtstage'):
                     self.eintragen_geburtstag(x[1])
             except ConfigParser.NoSectionError:
                 print 'Keine Jahrestage'
+            try:
+                for x in ini.items('Termine'):
+                    self.eintragen_termin(x[1])
+            except ConfigParser.NoSectionError:
+                print 'Keine Termine'
             try:
                 for x in ini.items('Zeitraum'):
                     self.eintragen_zeitraum(x[1])
