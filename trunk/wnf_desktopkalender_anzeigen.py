@@ -16,12 +16,12 @@ IniDatei = "/wnfdaten/wine/Eigene_Dateien/wnfDesktopKalender/wnfDesktopKalender.
 def main(args):
     zpfad = os.environ["HOME"]
     zpfad = "%s/.wnfdesktopkalender" % (zpfad)
-    if wnf_tools.ForceDir(zpfad):
+    if wnf_tools.forceDir(zpfad):
         d = datetime.date.today()
         t=wnf_desktopkalender_object.TwnfDesktopKalender(d)
         print t.caption
         #Entweder das Inifile wird als erster Parameter übegeben
-        ini=wnf_tools.ParamStr(args,1)
+        ini=wnf_tools.paramStr(args,1)
         if ini=="":
             #oder es wird das Standard Ini-File verwendet
             ini = IniDatei
