@@ -18,7 +18,7 @@ class TwnfDesktopKalender:
         self.bis = self.von + datetime.timedelta(days=28)
         #print self.von,self.bis
         self.termine = {}
-        self.caption = "wnfDesktopKalender 0.10"
+        self.caption = "wnfDesktopKalender 0.11"
         self.Breite = 800
         self.Hoehe = 600
         self.TagBreite = 90
@@ -50,8 +50,8 @@ class TwnfDesktopKalender:
     def eintragen(self, d, n, c):
         t = self.termine.get(d)
         if t == None:
-            t = {}
-        t[n] = c
+            t = []
+        t.append((n,c))
         self.termine[d] = t
 
     def get_termin(self, d, i):
@@ -60,7 +60,7 @@ class TwnfDesktopKalender:
         t = self.termine.get(d)
         if t <> None:
             j = 0;
-            for n, c in t.items():
+            for n, c in t:
                 if j == i:
                     s = n
                     cl = c
@@ -526,15 +526,15 @@ if __name__ == "__main__":
     #ini = "%s/.wnfdesktopkalender/wnfDesktopKalender.ini" % (ini)
     ini = "/wnfdaten/wine/Eigene_Dateien/wnfDesktopKalender/wnfDesktopKalender.ini"
     #ini = "/wnfdaten/Downloads/wnfDesktopKalender.ini"
-    dn = '/tmp/wnfDesktopkalender.jpg'
+    dn = '/tmp/wnfDesktopkalender.png'
     d = datetime.date.today()
-    d = wnf_tools.strToDate('02.02.2009')
+    d = wnf_tools.strToDate('21.03.2009')
     t = TwnfDesktopKalender(d)
     print t.caption
     print "Auswerten von ", ini
     if t.lesen(ini):
         #t.ausgabe_jpg_ohne_hintergrund(dn)
-        t.ausgabe_jpg(dn)
+        t.ausgabe_jpg_ohne_hintergrund(dn)
         #t.ausgabe_jpg(dn)
         #t.show_jpg()
         #print t.ausgabe_html(False)
