@@ -18,7 +18,7 @@ class TwnfDesktopKalender:
         self.bis = self.von + datetime.timedelta(days=28)
         #print self.von,self.bis
         self.termine = {}
-        self.caption = "wnfDesktopKalender 0.11"
+        self.caption = "wnfDesktopKalender 0.12"
         self.Breite = 800
         self.Hoehe = 600
         self.TagBreite = 90
@@ -482,10 +482,11 @@ class TwnfDesktopKalender:
             self.FarbeNormal = self.lese_color(ini, "Standard", "FarbeNormal", self.FarbeNormal)
             self.FarbeTransparent = self.lese_color(ini, "Standard", "FarbeTransparent", self.FarbeTransparent)
             self.Bundesland = self.lese_str(ini, "Standard", "Bundesland")
-            if ((self.modus==2) and (self.wochentag_i<2)):
+            if ((self.modus==2) and (self.wochentag_i<1)):
                 self.von = wnf_tools.ersterDieserWoche(self.heute)
                 self.von = self.von - datetime.timedelta(days=7)
                 self.bis = self.von + datetime.timedelta(days=28)
+                print self.wochentag_i
             self.eintragen_feiertage()
             try:
                 for x in ini.items('Geburtstage'):
@@ -528,7 +529,7 @@ if __name__ == "__main__":
     #ini = "/wnfdaten/Downloads/wnfDesktopKalender.ini"
     dn = '/tmp/wnfDesktopkalender.png'
     d = datetime.date.today()
-    d = wnf_tools.strToDate('21.03.2009')
+    d = wnf_tools.strToDate('31.03.2009')
     t = TwnfDesktopKalender(d)
     print t.caption
     print "Auswerten von ", ini
