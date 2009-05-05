@@ -18,7 +18,7 @@ class TwnfDesktopKalender:
         self.bis = self.von + datetime.timedelta(days=28)
         #print self.von,self.bis
         self.termine = {}
-        self.caption = "wnfDesktopKalender 0.12"
+        self.caption = "wnfDesktopKalender 0.14"
         self.Breite = 800
         self.Hoehe = 600
         self.TagBreite = 90
@@ -38,8 +38,10 @@ class TwnfDesktopKalender:
         self.FarbeNormal = wnf_tools.clWhite;
         self.GrafikD = "" #Grafikdateiname
         self.GrafikV = "" #Grafikverzeichnis
-        self.TextFont = wnf_tools.cFontDejaVuSans
-        self.TextFontSize = 9
+        #self.TextFont = wnf_tools.cFontDejaVuSans
+        #self.TextFontSize = 9
+        self.TextFont = wnf_tools.cFontArial
+        self.TextFontSize = 11
         self.Bundesland = wnf_tools.cSN
         self.CountDown = wnf_tools.strToDate('03.04.2009')
         self.CountDownATM = 0
@@ -136,7 +138,7 @@ class TwnfDesktopKalender:
             s = wnf_tools.cWochentageL[c]
             fd.text_nc(x + xc, y + th, s)
             x = x + self.TagBreite + tr
-        y = y + th + tr + tr
+        y = y + th + tr + tr+2
         for z in range(4):
             x = tr
             for c in range(7):
@@ -224,20 +226,20 @@ class TwnfDesktopKalender:
         difference1 = datetime.timedelta(days=1)
         x = x0
         y = y0
-        th = im.TextHeight + 4
+        th = self.TextFontSize + 2
         w = 0
         for c in range(7):
             w = w + 1
             im.rect(x, y, self.TagBreite, th)
             s = wnf_tools.cWochentageL[c]
             if (c == self.wochentag_i) and (self.FarbeHeute <> self.FarbeTransparent):
-                im.text_box_c(x + 1, y + 1, self.TagBreite-2, th-2, s, self.FarbeHeute)
+                im.text_box_c(x + 1, y + 1, self.TagBreite-2, th, s, self.FarbeHeute)
             elif (w == 7) and (self.FarbeSA <> self.FarbeTransparent):
-                im.text_box_c(x + 1, y + 1, self.TagBreite-2, th-2, s, self.FarbeSO)
+                im.text_box_c(x + 1, y + 1, self.TagBreite-2, th, s, self.FarbeSO)
             elif (w == 6) and (self.FarbeSA <> self.FarbeTransparent):
-                im.text_box_c(x + 1, y + 1, self.TagBreite-2, th-2, s, self.FarbeSA)
+                im.text_box_c(x + 1, y + 1, self.TagBreite-2, th, s, self.FarbeSA)
             elif (self.FarbeNormal <> self.FarbeTransparent):
-                im.text_box_c(x + 1, y + 1, self.TagBreite-2, th-2, s, self.FarbeNormal)
+                im.text_box_c(x + 1, y + 1, self.TagBreite-2, th, s, self.FarbeNormal)
             else:
                 im.text_nc(x + 2, y + 2, self.TagBreite-2, s)
             x = x + self.TagBreite + self.TagRand
@@ -296,7 +298,7 @@ class TwnfDesktopKalender:
             i = (i % len(x)) # Prozentzeichen bewirkt modulo
             s = x[i]
             s = self.GrafikV + s
-            print i,s
+            print 'Hintergrundbild',s
             if os.path.exists(s):
                 return s
             else:
@@ -315,8 +317,9 @@ class TwnfDesktopKalender:
         im.save(dn)
 
     def ausgabe_jpg_ohne_hintergrund(self, dn):
-        w = (self.TagBreite + self.TagRand) * 7;
-        h = (self.TagHoehe + self.TagRand) * 4 + (self.TextFontSize + 2) * 1;
+        w = (self.TagBreite *7) + (self.TagRand * 6)+1;
+        h = (self.TagHoehe * 4) + (self.TextFontSize + 2) + (self.TagRand * 4)+1;
+        #print self.TagBreite,self.TagHoehe,self.TagRand,w,h
         im = wnf_image.TwnfImage(w, h, self.TextFont, self.TextFontSize, self.HGColor, self.TextColor, self.LineColor)
         x0 = 0
         y0 = 0
@@ -466,9 +469,10 @@ class TwnfDesktopKalender:
             self.XOffset = ini.getint("Standard", "XOffset")
             self.YOffset = ini.getint("Standard", "YOffset")
             self.GrafikD = self.lese_str(ini, "Standard", "Linux_GrafikD")
+            self.GrafikD = self.lese_str(ini, "Standard", "Linux_GrafikD")
             self.GrafikV = self.lese_str(ini, "Standard", "Linux_GrafikV")
-            self.TextFont = self.lese_str(ini, "Standard", "Linux_TextFont")
-            self.TextFontSize = self.lese_int(ini, "Standard", "Linux_TextFont_Size", self.TextFontSize)
+            #self.TextFont = self.lese_str(ini, "Standard", "Linux_TextFont")
+            #self.TextFontSize = self.lese_int(ini, "Standard", "Linux_TextFont_Size", self.TextFontSize)
             self.CountDownFont = self.lese_str(ini, "Standard", "Linux_CountDownFont")
             self.CountDownFontSize = self.lese_int(ini, "Standard", "Linux_CountDownFont_Size", self.CountDownFontSize)
             self.CountDown = self.lese_date(ini, "Standard", "CountdownDatum",self.CountDown)
@@ -535,8 +539,8 @@ if __name__ == "__main__":
     print "Auswerten von ", ini
     if t.lesen(ini):
         #t.ausgabe_jpg_ohne_hintergrund(dn)
-        t.ausgabe_jpg_ohne_hintergrund(dn)
-        #t.ausgabe_jpg(dn)
+        #t.ausgabe_jpg_ohne_hintergrund(dn)
+        t.ausgabe_jpg(dn)
         #t.show_jpg()
         #print t.ausgabe_html(False)
         print "Ausgabe von ", dn

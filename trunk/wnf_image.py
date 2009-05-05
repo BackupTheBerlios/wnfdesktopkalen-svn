@@ -84,6 +84,9 @@ class TwnfImage:
 
     def text_box_c(self,x,y,b,h,text,cl,halign="center"):
         from math import floor
+        #Wenn der erste Buchstabe ein D,M ist, fehlt der erste Balken des Buchstabends
+        #deshalb wird der Strin in zwei Leerzeichen gefasst
+        text = ' '+text + ' '
         self.rectcl(x,y,b,h,cl)
         tw,th = self.font_n.getsize(text);
         #falls der Text nicht in die Textbox passt den string kürzen
@@ -121,14 +124,14 @@ class TwnfImage:
             self.draw.text((x,y),text,font=f,fill=cl)
 
 if __name__ == "__main__":
-    im = TwnfImage(600,400,wnf_tools.cFontTimes,10,wnf_tools.clWhite,wnf_tools.clBlack,wnf_tools.clBlack)
+    im = TwnfImage(600,400,wnf_tools.cFontArial,10,wnf_tools.clWhite,wnf_tools.clBlack,wnf_tools.clBlack)
     #im.rect(10,10,80,80)
     #im.rectcl(10,10,80,10,wnf_tools.clRed)
     s="Hg Ostersonntag Hg"
     th = im.TextHeight;
     for i in range(4):
-        im.rect(10,10+(th*i),80,th)
-        im.text_box_c(10,10+(th*i),80,th,s,wnf_tools.clRed)
+        im.rect(100,10+(th*i),100,th)
+        im.text_box_c(100,10+(th*i),100,th,s,wnf_tools.clRed)
 ##        im.text_box(10,10+(th*i),80,th,s,wnf_tools.clRed)
     im.rect(100,100,80,60)
     im.text_countdown(100,100,80,60,"50",wnf_tools.cFontArial,24,wnf_tools.clLime)
