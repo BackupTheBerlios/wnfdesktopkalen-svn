@@ -273,7 +273,7 @@ class TwnfDesktopKalender:
                     s, cl = self.get_termin(d, i)
                     if s <> "":
                         print d, s, cl
-                        im.text_box_c(x + 1, y + (th * (i + 1)), self.TagBreite-2, th, s, cl)
+                        im.text_box_c(x + 1, y + 2 + (th * (i + 1)), self.TagBreite-2, th, s, cl)
                 if (self.CountDown >= self.heute) and (self.CountDown >= d) and(d >= self.heute):
                     cd = self.CountDown -d
                     s = str(cd.days)
