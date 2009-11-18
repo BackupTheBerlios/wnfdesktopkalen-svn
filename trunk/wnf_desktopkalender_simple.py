@@ -32,6 +32,7 @@ def main(args):
                 print "Es wird keine Hintergrundgrafik verwendet. Linux_GrafikD ist leer"
             if t.TextFont=="":
                 print "Es wird kein Textfont verwendet. Linux_TextFont ist leer"
+            print t.TextFont
             #t.ausgabe_28()
             #wallpaper = "%s/wnfdesktopkalender.svg" % (zpfad)
             #t.ausgabe_svg(wallpaper)

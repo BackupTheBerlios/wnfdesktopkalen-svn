@@ -214,6 +214,7 @@ cSL = 'SL'
 
 
 def sFeiertag(d,aBundesland):
+    """Liefert die Bezeichnung des Feiertags oder einen Leerstring"""
     jj=d.year
     mm=d.month
     tt=d.day
@@ -252,6 +253,20 @@ def sFeiertag(d,aBundesland):
         s = "Reformationstag"
     elif (mm==11) and (tt==01) and (aBundesland in [cBW, cBY, cNW, cRP, cSL]):
         s = "Allerheiligen"
+    elif (mm==11) and (aBundesland in [cSN]):
+        #Wikipedia.de   Im 20. Jahrhundert wurde der Buß und Bettag meist
+        #am Mittwoch vor dem Ewigkeitssonntag
+        #(der letzte Sonntag des Kirchenjahres) begangen,
+        #also am Mittwoch vor dem 23. November bzw. 11 Tage vor dem ersten Adventssonntag.
+        #Die Termine des Buß- und Bettages bis 2010 sind:
+        #16.11.2005, 22.11.2006, 21.11.2007, 19.11.2008, 18.11.2009 und 17.11.2010.
+        dx = datetime.date(jj,mm,23-1)
+        #den Mittwoch vor dem 23.11. suchen
+        while dx.weekday()<>2:
+            dx = dx + datetime.timedelta(days=-1)
+        if (tt == dx.day):
+            s = "Buß-und Bettag"
+
     return(s)
 
 def alleFeiertage(jj,aBundesland):
@@ -265,7 +280,7 @@ def alleFeiertage(jj,aBundesland):
 
 if __name__ == "__main__":
     print "Ostersonntag ",ostersonntag_tn(2008)
-    alleFeiertage(2008,cSN)
+    alleFeiertage(2009,cSN)
     cl=pascalToRGB("$0080FFFF",clWhite)
     print cl
     print zeitraum_ueberlappt((2008,01,01),(2008,12,31),(2008,03,01),(2008,03,31))

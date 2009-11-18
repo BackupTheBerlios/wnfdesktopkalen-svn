@@ -18,7 +18,7 @@ class TwnfDesktopKalender:
         self.bis = self.von + datetime.timedelta(days=28)
         #print self.von,self.bis
         self.termine = {}
-        self.caption = "wnfDesktopKalender 0.14"
+        self.caption = "wnfDesktopKalender 0.15"
         self.Breite = 800
         self.Hoehe = 600
         self.TagBreite = 90
@@ -40,7 +40,7 @@ class TwnfDesktopKalender:
         self.GrafikV = "" #Grafikverzeichnis
         #self.TextFont = wnf_tools.cFontDejaVuSans
         #self.TextFontSize = 9
-        self.TextFont = wnf_tools.cFontArial
+        self.TextFont = wnf_tools.cFontDejaVuSans
         self.TextFontSize = 11
         self.Bundesland = wnf_tools.cSN
         self.CountDown = wnf_tools.strToDate('03.04.2009')

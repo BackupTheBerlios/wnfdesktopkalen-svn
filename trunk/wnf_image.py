@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
+#PIL Handbuch http://www.pythonware.com/library/pil/handbook/index.htm
 import os
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
+import codecs
 import wnf_tools
 
 class TwnfImage:
@@ -49,6 +51,8 @@ class TwnfImage:
             self.draw.text((x,y),text,fill=self.TextColor)
         else:
             self.draw.text((x,y),text,font=aFont,fill=self.TextColor)
+        #self.draw.text((x,y),"Buß- und Bettag")
+        #print text
 
     def text_cl(self,x,y,text,aFontname,aSize,cl):
         f = ImageFont.truetype(aFontname,aSize)
@@ -84,6 +88,7 @@ class TwnfImage:
 
     def text_box_c(self,x,y,b,h,text,cl,halign="center"):
         from math import floor
+        text=codecs.decode(text, 'UTF-8')
         #Wenn der erste Buchstabe ein D,M ist, fehlt der erste Balken des Buchstabends
         #deshalb wird der Strin in zwei Leerzeichen gefasst
         text = ' '+text + ' '
