@@ -246,7 +246,7 @@ def sFeiertag(d,aBundesland):
     elif (mm==12) and (tt==26):
         s = "Weihnachten"
     elif (mm==01) and (tt==06) and (aBundesland in [cBW, cBY, cST]):
-        s = "Heilige Drei Könige"
+        s = u"Heilige Drei Könige"
     elif (mm==8) and (tt==15) and (aBundesland in [cBY, cSL]):
         s = "Mariä Aufnahme"
     elif (mm==10) and (tt==31) and (aBundesland in [cBB, cMV, cSN, cST, cTH]):
@@ -265,7 +265,7 @@ def sFeiertag(d,aBundesland):
         while dx.weekday()<>2:
             dx = dx + datetime.timedelta(days=-1)
         if (tt == dx.day):
-            s = "Buß-und Bettag"
+            s = u"Buß-und Bettag"
 
     return(s)
 

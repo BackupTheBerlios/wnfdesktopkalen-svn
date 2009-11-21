@@ -6,6 +6,7 @@ import os
 import wnf_image
 import wnf_svg
 import wnf_tools
+import codecs
 
 class TwnfDesktopKalender:
 
@@ -18,7 +19,7 @@ class TwnfDesktopKalender:
         self.bis = self.von + datetime.timedelta(days=28)
         #print self.von,self.bis
         self.termine = {}
-        self.caption = "wnfDesktopKalender 0.15"
+        self.caption = "wnfDesktopKalender 0.16"
         self.Breite = 800
         self.Hoehe = 600
         self.TagBreite = 90
@@ -49,12 +50,6 @@ class TwnfDesktopKalender:
         self.CountDownFontSize = 18
         self.FarbeCountDown = wnf_tools.clWhite;
 
-    def eintragen(self, d, n, c):
-        t = self.termine.get(d)
-        if t == None:
-            t = []
-        t.append((n,c))
-        self.termine[d] = t
 
     def get_termin(self, d, i):
         s = ""
@@ -272,7 +267,7 @@ class TwnfDesktopKalender:
                 for i in range(4):
                     s, cl = self.get_termin(d, i)
                     if s <> "":
-                        print d, s, cl
+                        print d, s.encode("utf-8"), cl
                         im.text_box_c(x + 1, y + 2 + (th * (i + 1)), self.TagBreite-2, th, s, cl)
                 if (self.CountDown >= self.heute) and (self.CountDown >= d) and(d >= self.heute):
                     cd = self.CountDown -d
@@ -332,10 +327,21 @@ class TwnfDesktopKalender:
         wnf_tools.dateiStarten(dn)
         os.remove(dn)
 
+    def eintragen(self, d, n, c):
+        t = self.termine.get(d)
+        if t == None:
+            t = []
+        n = n.decode("iso-8859-1")
+        t.append((n,c))
+        self.termine[d] = t
+
     def eintragen_feiertage(self):
         d = self.von
         while (d <= self.bis):
             n = wnf_tools.sFeiertag(d, self.Bundesland)
+            #Feiertage müssen von Unicode nach Ansi gewandelt werden
+            #damit sie das gleiche Coding haben wie die Termine aus dem Inifile
+            n = n.encode("iso-8859-1")
             if n <> "":
                 self.eintragen(d, n, self.FarbeFT)
             d = d + datetime.timedelta(days=1)

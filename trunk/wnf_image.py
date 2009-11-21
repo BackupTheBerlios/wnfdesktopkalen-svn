@@ -5,7 +5,6 @@ import os
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
-import codecs
 import wnf_tools
 
 class TwnfImage:
@@ -88,7 +87,6 @@ class TwnfImage:
 
     def text_box_c(self,x,y,b,h,text,cl,halign="center"):
         from math import floor
-        text=codecs.decode(text, 'UTF-8')
         #Wenn der erste Buchstabe ein D,M ist, fehlt der erste Balken des Buchstabends
         #deshalb wird der Strin in zwei Leerzeichen gefasst
         text = ' '+text + ' '
